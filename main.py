@@ -28,7 +28,21 @@ def main():
     std_path = "results/std.json" # Path to std json
     clamp_range_path = "results/clamp_range.json" # Path to clamp range json
     es_list = [
-        ["Test", ["9a4bb226"]], # ["NAME FOR THIS RUN", ["LIST OF ARC TASKS"]]
+        ["351d6448", ["351d6448"]], # ["NAME FOR THIS RUN", ["LIST OF ARC TASKS"]]
+        ["414297c0", ["414297c0"]],
+        ["e6de6e8f", ["e6de6e8f"]],
+        ["e7a25a18", ["e7a25a18"]],
+        ["505fff84", ["505fff84"]],
+        ["b1fc8b8e", ["b1fc8b8e"]],
+        ["1a6449f1", ["1a6449f1"]],
+        ["3194b014", ["3194b014"]],
+        ["9b4c17c4", ["9b4c17c4"]],
+        ["0a1d4ef5", ["0a1d4ef5"]],
+        ["9a4bb226", ["9a4bb226"]],
+        ["12422b43", ["12422b43"]],
+        ["1c02dbbe", ["1c02dbbe"]],
+        ["477d2879", ["477d2879"]],
+        ["67b4a34d", ["67b4a34d"]],
     ]
     with open(std_path, 'r') as f:
         std = json.load(f)
