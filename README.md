@@ -1,6 +1,6 @@
-# ERO
+# Evolutionary Reasoning Optimization (ERO)
  
-An python implementation for ERO.
+A step-by-step python implementation for our paper "Evolutionary System 2 Reasoning: An Empirical Proof".
 
 ![intro](intro.png)
 ![scores](scores.png)
@@ -44,18 +44,20 @@ Download: ARC-1: https://github.com/fchollet/ARC-AGI
 
 **Run**
 
-An example can be:
+Run ERO with default settings:
 ```
 python main.py
 ```
-which means we run ERO with default configs.
 
-A detailed example can be:
+
+You can also indicate evolution settings in ERO:
 ```
 python main.py --size 1000 --epochs 12 --scale 0.15
 ```
-In this example, we use a population size of 1,000, run the evolution for 20 generations and set the scale factor to 0.15.
 
-In addition, the results will be saved in the folder "results" and the best model will be saved in "models/best_models"
+See "main.py" for detailed configurable parameters in ERO. 
 
-The configs can be found in "main.py". 
+### Step 6
+
+In the end of the ERO, the results will be saved in the folder "results" and the best model will be saved in "models/best_models".
+
