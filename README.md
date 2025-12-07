@@ -49,7 +49,6 @@ Run ERO with default settings:
 python main.py
 ```
 
-
 You can also indicate evolution settings in ERO:
 ```
 python main.py --size 1000 --epochs 12 --scale 0.15
@@ -59,5 +58,17 @@ See "main.py" for detailed configurable parameters in ERO.
 
 ### Step 6
 
-In the end of the ERO, the results will be saved in the folder "results" and the best model will be saved in "models/best_models".
+***Save data***
 
+In the end of the ERO, the results will be saved in the folder "results" automatically and the best model will be saved in "models/best_models".
+
+### Step 7
+
+***Evaluate model***
+
+A example can be:
+```
+python eval.py --state_dict models/best_models/9a4bb226_state_dict.pth --task 9a4bb226
+```
+
+The JSON file for the task will be searched and read from the folder "data". The output and the score will be printed on the console.
