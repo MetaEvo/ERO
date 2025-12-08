@@ -1,6 +1,5 @@
 import ray
 import torch
-import copy
 import gc
 from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
 from utils_fn import filter_text, fill_matrix, calculate_similarity_between, initialize
@@ -46,18 +45,16 @@ def save_model(model, path):
     )
 
 
-def sample_model_from(mean_model, std, clamp_range=None, device=None):
-    """Sample a new model from distribution N(mean_model, std^2)."""
+def sample_model_inplace_from(model, mean_model, std, clamp_range=None):
+    """Sample a model inplace from distribution N(mean_model, std^2)."""
     clear_gpu_memory()
-    new_model = copy.deepcopy(mean_model) if device is None else copy.deepcopy(mean_model).to(device)
     with torch.no_grad():
-        for name, params in new_model.named_parameters():
-            params.add_(torch.randn_like(params) * torch.tensor(std[name]))
+        for (name, params), (_, mean_params) in zip(model.named_parameters(), mean_model.named_parameters()):
+            params.copy_(mean_params.add(torch.randn_like(mean_params) * torch.tensor(std[name])))
 
             if clamp_range is not None:
                 params.clamp_(min=torch.tensor(clamp_range[name][0], device=params.device),
                               max=torch.tensor(clamp_range[name][1], device=params.device))
-    return new_model
 
 
 def average_state_dicts_inplace(state_dicts):
@@ -176,20 +173,20 @@ class ModelWorker:
         self.processor, self.base_model = load_qwen2_5_vl(model_path, "cuda:0")
 
     def run(self, model_no_list, std, clamp_range, tasks, recorder):
+        _, sample = load_qwen2_5_vl(self.model_path, "cuda:0")
         best_model_state_dict = None
         best_model_scores = []
         final_scores = [[] for _ in range(len(tasks))]
         final_results = [[] for _ in range(len(tasks))]
         for _ in model_no_list:
-            sample = sample_model_from(self.base_model, std, clamp_range)
+            sample_model_inplace_from(sample, self.base_model, std, clamp_range)
             scores, results = evaluate_models([sample], [self.processor], tasks, recorder)
             for j in range(len(tasks)):
                 final_scores[j].extend(scores[j])
                 final_results[j].extend(results[j])
             if sum([sum(s) for s in best_model_scores]) <= sum([sum(s) for s in scores]):
-                best_model_state_dict = {k: v.cpu() for k, v in sample.state_dict().items()}
+                best_model_state_dict = sample.state_dict()
                 best_model_scores = scores
-            del sample
             clear_gpu_memory()
         del self.base_model
         del self.processor
