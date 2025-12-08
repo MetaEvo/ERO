@@ -2,6 +2,15 @@
  
 A step-by-step python implementation for our paper "Evolutionary System 2 Reasoning: An Empirical Proof".
 
+```latex
+@article{ERO,
+  title={Evolutionary System 2 Reasoning: An Empirical Proof},
+  author={Zeyuan Ma and Wenqi Huang and Guo-Huan Song and Hongshu Guo and Sijie Ma and Zhiguang Cao and Yue-Jiao Gong},
+  journal={arXiv preprint arXiv:2512.05760},
+  year={2025}
+}
+```
+
 ![intro](intro.png)
 ![scores](scores.png)
 
