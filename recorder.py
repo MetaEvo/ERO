@@ -49,8 +49,8 @@ class Recorder:
         with open(filepath, 'w', newline='', encoding='utf-8-sig') as f:
             writer = csv.writer(f)
             writer.writerow([''] + self.headers)
-            for exp_id, values in self.data.items():
-                row = [exp_id] + [values.get(h, '') for h in self.headers]
+            for task, values in self.data.items():
+                row = [f"'{task}'"] + [values.get(h, '') for h in self.headers]
                 writer.writerow(row)
 
     def save(self):
@@ -63,10 +63,12 @@ class Recorder:
 
     def get(self, row_name: str, col_name: str) -> Any:
         """Get a value."""
+        row_name = f"'{row_name}'"
         return self.data.get(row_name, {}).get(col_name, None)
 
     def set(self, row_name: str, col_name: str, value: Any):
         """Set a value."""
+        row_name = f"'{row_name}'"
         if col_name not in self.headers:
             self.headers.append(col_name)
             for e in self.data.values():
@@ -76,4 +78,4 @@ class Recorder:
         self.data[row_name][col_name] = value
 
     def __repr__(self):
-        return f"<ExperimentTable {len(self.data)} experiments × {len(self.headers)} types>"
+        return f"<Table {len(self.data)} tasks × {len(self.headers)} types>"
