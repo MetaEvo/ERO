@@ -50,7 +50,7 @@ class Recorder:
             writer = csv.writer(f)
             writer.writerow([''] + self.headers)
             for task, values in self.data.items():
-                row = [f"'{task}'"] + [values.get(h, '') for h in self.headers]
+                row = [task] + [values.get(h, '') for h in self.headers]
                 writer.writerow(row)
 
     def save(self):
